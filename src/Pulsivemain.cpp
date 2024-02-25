@@ -341,6 +341,36 @@ VOID WINAPI S4() {
 	waveOutClose(hWaveOut);
 }
 
+VOID WINAPI S5() {
+	HWAVEOUT hWaveOut = 0;
+	WAVEFORMATEX wfx = { WAVE_FORMAT_PCM, 1, 8000, 8000, 1, 8, 0 };
+	waveOutOpen(&hWaveOut, WAVE_MAPPER, &wfx, 0, 0, CALLBACK_NULL);
+	char buffer[8000 * 30] = {};
+	for (DWORD t = 0; t < sizeof(buffer); ++t)
+		buffer[t] = static_cast<char>(t * t >> 0 >> (t >> 8));
+
+	WAVEHDR header = { buffer, sizeof(buffer), 0, 0, 0, 0, 0, 0 };
+	waveOutPrepareHeader(hWaveOut, &header, sizeof(WAVEHDR));
+	waveOutWrite(hWaveOut, &header, sizeof(WAVEHDR));
+	waveOutUnprepareHeader(hWaveOut, &header, sizeof(WAVEHDR));
+	waveOutClose(hWaveOut);
+}
+
+VOID WINAPI S6() {
+	HWAVEOUT hWaveOut = 0;
+	WAVEFORMATEX wfx = { WAVE_FORMAT_PCM, 1, 8000, 8000, 1, 8, 0 };
+	waveOutOpen(&hWaveOut, WAVE_MAPPER, &wfx, 0, 0, CALLBACK_NULL);
+	char buffer[8000 * 30] = {};
+	for (DWORD t = 0; t < sizeof(buffer); ++t)
+		buffer[t] = static_cast<char>(t * (t >> 2 ^ t >> 7) ^ (t >> 2 | t >> 7) * t);
+
+	WAVEHDR header = { buffer, sizeof(buffer), 0, 0, 0, 0, 0, 0 };
+	waveOutPrepareHeader(hWaveOut, &header, sizeof(WAVEHDR));
+	waveOutWrite(hWaveOut, &header, sizeof(WAVEHDR));
+	waveOutUnprepareHeader(hWaveOut, &header, sizeof(WAVEHDR));
+	waveOutClose(hWaveOut);
+}
+
 int main()
 {
 	//ShowWindow(GetConsoleWindow(), SW_HIDE);
@@ -374,6 +404,8 @@ int main()
 			S3();
 			Sleep(30000);
 			S4();
+			Sleep(30000);
+			ExitProcess(0);
 			Sleep(INFINITE);
 		}
 	}
